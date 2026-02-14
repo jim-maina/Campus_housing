@@ -72,15 +72,10 @@ class ListingsFeedPage extends StatelessWidget {
             ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // for now add a sample
-          provider.add(
-            Listing(
-              id: DateTime.now().millisecondsSinceEpoch.toString(),
-              title: 'New listing',
-              description: 'Description',
-              price: 0,
-              address: '',
-            ),
+          // Landlords can add listings, students cannot
+          // TODO: Implement landlord listing creation
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Contact admin to list your property')),
           );
         },
         child: const Icon(Icons.add),

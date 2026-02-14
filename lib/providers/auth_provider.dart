@@ -79,10 +79,41 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
+  /// Login an existing user
+  /// In a real app, this would verify against a backend database
+  Future<bool> login({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      // TODO: In production, call to backend to verify credentials
+      // For demo purposes, we'll accept any email/password combo
+      // In reality, you'd hash and compare passwords from a database
+      
+      final id = DateTime.now().millisecondsSinceEpoch.toString();
+      
+      // For now, assume they're a student on login
+      // In production, you'd fetch their actual user type from the backend
+      _currentUser = Student(
+        id: id,
+        email: email,
+        password: password,
+        phone: '+254xxx', // Would come from backend
+      );
+
+      notifyListeners();
+      return true;
+    } catch (e) {
+      print('Login error: $e');
+      return false;
+    }
+  }
+
   /// Logout the current user
   void logout() {
     _currentUser = null;
     notifyListeners();
   }
 }
+
 

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import '../screens/signup_student.dart';
 import '../screens/signup_landlord.dart';
+import '../screens/login.dart';
 
 /// RoleSelectorPage is the entry point where users choose between
-/// signing up as a Student or Landlord
+/// signing up as a Student or Landlord, or logging in
 class RoleSelectorPage extends StatelessWidget {
   const RoleSelectorPage({super.key});
 
@@ -54,6 +55,28 @@ class RoleSelectorPage extends StatelessWidget {
                     ),
                   );
                 },
+              ),
+
+              const SizedBox(height: 40),
+
+              // Login Link
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const LoginPage(),
+                    ),
+                  );
+                },
+                child: const Text(
+                  'Already have an account? Login',
+                  style: TextStyle(
+                    color: Colors.deepPurple,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
+                ),
               ),
             ],
           ),
