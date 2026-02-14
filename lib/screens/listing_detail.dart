@@ -19,7 +19,7 @@ class ListingDetailPage extends StatelessWidget {
           children: [
             Text(listing.address),
             const SizedBox(height: 8),
-            Text('\$${listing.price.toStringAsFixed(0)}',
+            Text(listing.formattedPrice,
                 style: Theme.of(context).textTheme.headlineSmall),
             const SizedBox(height: 16),
             Text(listing.description),

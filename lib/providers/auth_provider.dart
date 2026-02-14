@@ -24,11 +24,7 @@ class AuthProvider extends ChangeNotifier {
   Future<bool> signupStudent({
     required String email,
     required String password,
-    required String fullName,
     required String phone,
-    required String university,
-    required String major,
-    required int graduationYear,
   }) async {
     try {
       // TODO: In production, validate email format and call a backend API
@@ -41,11 +37,7 @@ class AuthProvider extends ChangeNotifier {
         id: id,
         email: email,
         password: password, // In production, never store plain passwords!
-        fullName: fullName,
         phone: phone,
-        university: university,
-        major: major,
-        graduationYear: graduationYear,
       );
 
       // Notify listeners that user state has changed
@@ -62,11 +54,7 @@ class AuthProvider extends ChangeNotifier {
   Future<bool> signupLandlord({
     required String email,
     required String password,
-    required String fullName,
     required String phone,
-    required String companyName,
-    required String bankAccount,
-    required String taxId,
   }) async {
     try {
       // TODO: In production, validate email format and call a backend API
@@ -79,11 +67,7 @@ class AuthProvider extends ChangeNotifier {
         id: id,
         email: email,
         password: password, // In production, never store plain passwords!
-        fullName: fullName,
         phone: phone,
-        companyName: companyName,
-        bankAccount: bankAccount,
-        taxId: taxId,
       );
 
       // Notify listeners that user state has changed
@@ -101,3 +85,4 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 }
+

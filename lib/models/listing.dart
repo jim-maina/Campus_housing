@@ -5,6 +5,7 @@ class Listing {
   final double price;
   final String address;
   final List<String> imageUrls;
+  final String currency; // Currency code (e.g., 'KSH')
 
   Listing({
     required this.id,
@@ -13,5 +14,12 @@ class Listing {
     required this.price,
     required this.address,
     this.imageUrls = const [],
+    this.currency = 'KSH', // Default to Kenyan Shillings
   });
+
+  /// Format price with currency symbol
+  String get formattedPrice {
+    return '$currency ${price.toStringAsFixed(0)}';
+  }
 }
+

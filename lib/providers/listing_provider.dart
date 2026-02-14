@@ -36,17 +36,19 @@ class ListingProvider extends ChangeNotifier {
         id: '1',
         title: 'Cozy 2‑bed near campus',
         description: 'A comfortable two‑bedroom just a short walk from campus.',
-        price: 1200,
+        price: 15000,
         address: '123 College Ave',
         imageUrls: [],
+        currency: 'KSH',
       ),
       Listing(
         id: '2',
         title: 'Spacious house with yard',
         description: 'Perfect for a group of 4 students, includes parking.',
-        price: 2200,
+        price: 25000,
         address: '456 University St',
         imageUrls: [],
+        currency: 'KSH',
       ),
     ]);
     notifyListeners();

@@ -18,13 +18,7 @@ class _StudentSignupPageState extends State<StudentSignupPage> {
   // Text controllers to capture user input
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _fullNameController = TextEditingController();
   final _phoneController = TextEditingController();
-  final _universityController = TextEditingController();
-  final _majorController = TextEditingController();
-
-  // Graduation year dropdown
-  int _selectedGraduationYear = DateTime.now().year;
 
   // Loading state
   bool _isLoading = false;
@@ -34,10 +28,7 @@ class _StudentSignupPageState extends State<StudentSignupPage> {
     // Clean up controllers when widget is disposed
     _emailController.dispose();
     _passwordController.dispose();
-    _fullNameController.dispose();
     _phoneController.dispose();
-    _universityController.dispose();
-    _majorController.dispose();
     super.dispose();
   }
 
@@ -55,11 +46,7 @@ class _StudentSignupPageState extends State<StudentSignupPage> {
       final success = await context.read<AuthProvider>().signupStudent(
         email: _emailController.text.trim(),
         password: _passwordController.text,
-        fullName: _fullNameController.text.trim(),
         phone: _phoneController.text.trim(),
-        university: _universityController.text.trim(),
-        major: _majorController.text.trim(),
-        graduationYear: _selectedGraduationYear,
       );
 
       if (success && mounted) {
@@ -141,89 +128,18 @@ class _StudentSignupPageState extends State<StudentSignupPage> {
               ),
               const SizedBox(height: 15),
 
-              // Full Name Field
-              TextFormField(
-                controller: _fullNameController,
-                decoration: const InputDecoration(
-                  labelText: 'Full Name',
-                  hintText: 'John Doe',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.person),
-                ),
-                validator: (value) {
-                  if (value?.isEmpty ?? true) return 'Full name is required';
-                  return null;
-                },
-              ),
-              const SizedBox(height: 15),
-
               // Phone Field
               TextFormField(
                 controller: _phoneController,
                 decoration: const InputDecoration(
                   labelText: 'Phone Number',
-                  hintText: '(555) 123-4567',
+                  hintText: '+254 7XX XXX XXX',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.phone),
                 ),
                 validator: (value) {
                   if (value?.isEmpty ?? true) return 'Phone number is required';
                   return null;
-                },
-              ),
-              const SizedBox(height: 15),
-
-              // University Field
-              TextFormField(
-                controller: _universityController,
-                decoration: const InputDecoration(
-                  labelText: 'University',
-                  hintText: 'e.g., University of California',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.school),
-                ),
-                validator: (value) {
-                  if (value?.isEmpty ?? true) return 'University is required';
-                  return null;
-                },
-              ),
-              const SizedBox(height: 15),
-
-              // Major Field
-              TextFormField(
-                controller: _majorController,
-                decoration: const InputDecoration(
-                  labelText: 'Major',
-                  hintText: 'e.g., Computer Science',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.book),
-                ),
-                validator: (value) {
-                  if (value?.isEmpty ?? true) return 'Major is required';
-                  return null;
-                },
-              ),
-              const SizedBox(height: 15),
-
-              // Graduation Year Dropdown
-              DropdownButtonFormField<int>(
-                value: _selectedGraduationYear,
-                decoration: const InputDecoration(
-                  labelText: 'Graduation Year',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.calendar_today),
-                ),
-                items: List.generate(6, (index) {
-                  final year = DateTime.now().year + index;
-                  return DropdownMenuItem(
-                    value: year,
-                    child: Text(year.toString()),
-                  );
-                }),
-                onChanged: (value) {
-                  if (value != null) {
-                    setState(() => _selectedGraduationYear = value);
-                  }
                 },
               ),
               const SizedBox(height: 30),
@@ -249,3 +165,4 @@ class _StudentSignupPageState extends State<StudentSignupPage> {
     );
   }
 }
+

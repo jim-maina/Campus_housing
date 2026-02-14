@@ -18,11 +18,7 @@ class _LandlordSignupPageState extends State<LandlordSignupPage> {
   // Text controllers to capture user input
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _fullNameController = TextEditingController();
   final _phoneController = TextEditingController();
-  final _companyNameController = TextEditingController();
-  final _bankAccountController = TextEditingController();
-  final _taxIdController = TextEditingController();
 
   // Loading state
   bool _isLoading = false;
@@ -32,11 +28,7 @@ class _LandlordSignupPageState extends State<LandlordSignupPage> {
     // Clean up controllers when widget is disposed
     _emailController.dispose();
     _passwordController.dispose();
-    _fullNameController.dispose();
     _phoneController.dispose();
-    _companyNameController.dispose();
-    _bankAccountController.dispose();
-    _taxIdController.dispose();
     super.dispose();
   }
 
@@ -54,11 +46,7 @@ class _LandlordSignupPageState extends State<LandlordSignupPage> {
       final success = await context.read<AuthProvider>().signupLandlord(
         email: _emailController.text.trim(),
         password: _passwordController.text,
-        fullName: _fullNameController.text.trim(),
         phone: _phoneController.text.trim(),
-        companyName: _companyNameController.text.trim(),
-        bankAccount: _bankAccountController.text.trim(),
-        taxId: _taxIdController.text.trim(),
       );
 
       if (success && mounted) {
@@ -140,81 +128,17 @@ class _LandlordSignupPageState extends State<LandlordSignupPage> {
               ),
               const SizedBox(height: 15),
 
-              // Full Name Field
-              TextFormField(
-                controller: _fullNameController,
-                decoration: const InputDecoration(
-                  labelText: 'Full Name',
-                  hintText: 'John Smith',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.person),
-                ),
-                validator: (value) {
-                  if (value?.isEmpty ?? true) return 'Full name is required';
-                  return null;
-                },
-              ),
-              const SizedBox(height: 15),
-
               // Phone Field
               TextFormField(
                 controller: _phoneController,
                 decoration: const InputDecoration(
                   labelText: 'Phone Number',
-                  hintText: '(555) 123-4567',
+                  hintText: '+254 7XX XXX XXX',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.phone),
                 ),
                 validator: (value) {
                   if (value?.isEmpty ?? true) return 'Phone number is required';
-                  return null;
-                },
-              ),
-              const SizedBox(height: 15),
-
-              // Company Name Field
-              TextFormField(
-                controller: _companyNameController,
-                decoration: const InputDecoration(
-                  labelText: 'Company Name',
-                  hintText: 'e.g., Happy Homes LLC',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.business),
-                ),
-                validator: (value) {
-                  if (value?.isEmpty ?? true) return 'Company name is required';
-                  return null;
-                },
-              ),
-              const SizedBox(height: 15),
-
-              // Bank Account Field
-              TextFormField(
-                controller: _bankAccountController,
-                decoration: const InputDecoration(
-                  labelText: 'Bank Account',
-                  hintText: 'Your bank account number',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.account_balance),
-                ),
-                validator: (value) {
-                  if (value?.isEmpty ?? true) return 'Bank account is required';
-                  return null;
-                },
-              ),
-              const SizedBox(height: 15),
-
-              // Tax ID Field
-              TextFormField(
-                controller: _taxIdController,
-                decoration: const InputDecoration(
-                  labelText: 'Tax ID',
-                  hintText: 'Your business tax ID',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.receipt),
-                ),
-                validator: (value) {
-                  if (value?.isEmpty ?? true) return 'Tax ID is required';
                   return null;
                 },
               ),

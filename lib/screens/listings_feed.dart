@@ -58,7 +58,7 @@ class ListingsFeedPage extends StatelessWidget {
                                 Text(item.address,
                                     style: Theme.of(context).textTheme.bodySmall),
                                 const SizedBox(height: 4),
-                                Text('\$${item.price.toStringAsFixed(0)}',
+                                Text(item.formattedPrice,
                                     style: Theme.of(context).textTheme.bodyLarge),
                               ],
                             ),
