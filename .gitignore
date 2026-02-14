@@ -1,0 +1,9 @@
+# Dart & Flutter
+.dart_tool/
+.build/
+.packages
+.pub/
+build/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+# add platform build folders, IDE settings, etc.
