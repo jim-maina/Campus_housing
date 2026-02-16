@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'providers/listing_provider.dart';
 import 'providers/auth_provider.dart';
 import 'screens/listings_feed.dart';
-import 'screens/role_selector.dart';
+import 'screens/landing_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -47,9 +47,10 @@ class _HomeRouter extends StatelessWidget {
         if (authProvider.isLoggedIn) {
           return const ListingsFeedPage();
         } else {
-          return const RoleSelectorPage();
+          return const LandingPage();
         }
       },
     );
   }
 }
+
