@@ -84,19 +84,22 @@ class LandingPage extends StatelessWidget {
                       _FeatureCard(
                         icon: Icons.location_on,
                         title: 'Near Campus',
-                        description: 'Find housing within walking distance of your university',
+                        description:
+                            'Find housing within walking distance of your university',
                       ),
                       const SizedBox(height: 16),
                       _FeatureCard(
                         icon: Icons.local_offer,
                         title: 'Affordable Rates',
-                        description: 'Browse verified listings at prices students can afford',
+                        description:
+                            'Browse verified listings at prices students can afford',
                       ),
                       const SizedBox(height: 16),
                       _FeatureCard(
                         icon: Icons.verified_user,
                         title: 'Verified Landlords',
-                        description: 'Connect directly with reliable property owners',
+                        description:
+                            'Connect directly with reliable property owners',
                       ),
                     ],
                   ),
@@ -189,11 +192,7 @@ class _FeatureCard extends StatelessWidget {
               color: Colors.white.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Icon(
-              icon,
-              color: Colors.white,
-              size: 28,
-            ),
+            child: Icon(icon, color: Colors.white, size: 28),
           ),
           const SizedBox(width: 16),
           Expanded(

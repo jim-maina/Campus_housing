@@ -53,4 +53,3 @@ class _HomeRouter extends StatelessWidget {
     );
   }
 }
-
