@@ -65,9 +65,9 @@ class _StudentSignupPageState extends State<StudentSignupPage> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Error: $e')));
       }
     } finally {
       if (mounted) {
@@ -79,90 +79,172 @@ class _StudentSignupPageState extends State<StudentSignupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Student Signup')),
+      resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const Text(
-                'Create Your Account',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 20),
-
-              // Email Field
-              TextFormField(
-                controller: _emailController,
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                  hintText: 'student@example.com',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.email),
+        padding: EdgeInsets.fromLTRB(
+          16,
+          40,
+          16,
+          16 + MediaQuery.of(context).viewInsets.bottom,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // Header with icon
+            Center(
+              child: Container(
+                width: 80,
+                height: 80,
+                decoration: BoxDecoration(
+                  color: Colors.deepPurple.shade100,
+                  borderRadius: BorderRadius.circular(20),
                 ),
-                validator: (value) {
-                  if (value?.isEmpty ?? true) return 'Email is required';
-                  if (!value!.contains('@')) return 'Invalid email format';
-                  return null;
-                },
+                child: Icon(Icons.school, size: 40, color: Colors.deepPurple),
               ),
-              const SizedBox(height: 15),
-
-              // Password Field
-              TextFormField(
-                controller: _passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: 'Password',
-                  hintText: 'Choose a strong password',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.lock),
+            ),
+            const SizedBox(height: 24),
+            Center(
+              child: Text(
+                'Student Registration',
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.deepPurple,
                 ),
-                validator: (value) {
-                  if (value?.isEmpty ?? true) return 'Password is required';
-                  if (value!.length < 6) return 'Password must be at least 6 characters';
-                  return null;
-                },
               ),
-              const SizedBox(height: 15),
-
-              // Phone Field
-              TextFormField(
-                controller: _phoneController,
-                decoration: const InputDecoration(
-                  labelText: 'Phone Number',
-                  hintText: '+254 7XX XXX XXX',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.phone),
+            ),
+            const SizedBox(height: 8),
+            Center(
+              child: Text(
+                'Find affordable housing near campus',
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(color: Colors.grey),
+              ),
+            ),
+            const SizedBox(height: 32),
+            // Form card
+            Card(
+              elevation: 2,
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      // Email Field
+                      TextFormField(
+                        controller: _emailController,
+                        decoration: InputDecoration(
+                          labelText: 'Email',
+                          hintText: 'student@example.com',
+                          prefixIcon: const Icon(Icons.email),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          filled: true,
+                          fillColor: Colors.grey.shade50,
+                        ),
+                        validator: (value) {
+                          if (value?.isEmpty ?? true)
+                            return 'Email is required';
+                          if (!value!.contains('@'))
+                            return 'Invalid email format';
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      // Password Field
+                      TextFormField(
+                        controller: _passwordController,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          labelText: 'Password',
+                          hintText: 'Choose a strong password',
+                          prefixIcon: const Icon(Icons.lock),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          filled: true,
+                          fillColor: Colors.grey.shade50,
+                        ),
+                        validator: (value) {
+                          if (value?.isEmpty ?? true)
+                            return 'Password is required';
+                          if (value!.length < 6)
+                            return 'Password must be at least 6 characters';
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      // Phone Field
+                      TextFormField(
+                        controller: _phoneController,
+                        decoration: InputDecoration(
+                          labelText: 'Phone Number',
+                          hintText: '+254 7XX XXX XXX',
+                          prefixIcon: const Icon(Icons.phone),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          filled: true,
+                          fillColor: Colors.grey.shade50,
+                        ),
+                        validator: (value) {
+                          if (value?.isEmpty ?? true)
+                            return 'Phone number is required';
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 24),
+                      // Signup Button
+                      ElevatedButton(
+                        onPressed: _isLoading ? null : _handleSignup,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.deepPurple,
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        child: _isLoading
+                            ? const SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    Colors.white,
+                                  ),
+                                ),
+                              )
+                            : const Text(
+                                'Create Account',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                      ),
+                    ],
+                  ),
                 ),
-                validator: (value) {
-                  if (value?.isEmpty ?? true) return 'Phone number is required';
-                  return null;
-                },
               ),
-              const SizedBox(height: 30),
-
-              // Signup Button
-              ElevatedButton(
-                onPressed: _isLoading ? null : _handleSignup,
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 15),
+            ),
+            const SizedBox(height: 16),
+            Center(
+              child: TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text(
+                  'Already have an account? Login',
+                  style: TextStyle(color: Colors.deepPurple.shade700),
                 ),
-                child: _isLoading
-                    ? const SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    : const Text('Create Account', style: TextStyle(fontSize: 16)),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
 }
-

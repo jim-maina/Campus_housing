@@ -58,9 +58,9 @@ class _LoginPageState extends State<LoginPage> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Error: $e')));
       }
     } finally {
       if (mounted) {
@@ -72,77 +72,148 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
+      resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const Text(
+        padding: EdgeInsets.fromLTRB(
+          16,
+          40,
+          16,
+          16 + MediaQuery.of(context).viewInsets.bottom,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // Header with icon
+            Center(
+              child: Container(
+                width: 80,
+                height: 80,
+                decoration: BoxDecoration(
+                  color: Colors.deepPurple.shade100,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Icon(Icons.login, size: 40, color: Colors.deepPurple),
+              ),
+            ),
+            const SizedBox(height: 24),
+            Center(
+              child: Text(
                 'Welcome Back',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 20),
-
-              // Email Field
-              TextFormField(
-                controller: _emailController,
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                  hintText: 'you@example.com',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.email),
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.deepPurple,
                 ),
-                validator: (value) {
-                  if (value?.isEmpty ?? true) return 'Email is required';
-                  if (!value!.contains('@')) return 'Invalid email format';
-                  return null;
-                },
               ),
-              const SizedBox(height: 15),
-
-              // Password Field
-              TextFormField(
-                controller: _passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: 'Password',
-                  hintText: 'Your password',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.lock),
+            ),
+            const SizedBox(height: 8),
+            Center(
+              child: Text(
+                'Login to your account',
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(color: Colors.grey),
+              ),
+            ),
+            const SizedBox(height: 32),
+            // Form card
+            Card(
+              elevation: 2,
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      // Email Field
+                      TextFormField(
+                        controller: _emailController,
+                        decoration: InputDecoration(
+                          labelText: 'Email',
+                          hintText: 'you@example.com',
+                          prefixIcon: const Icon(Icons.email),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          filled: true,
+                          fillColor: Colors.grey.shade50,
+                        ),
+                        validator: (value) {
+                          if (value?.isEmpty ?? true)
+                            return 'Email is required';
+                          if (!value!.contains('@'))
+                            return 'Invalid email format';
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      // Password Field
+                      TextFormField(
+                        controller: _passwordController,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          labelText: 'Password',
+                          hintText: 'Your password',
+                          prefixIcon: const Icon(Icons.lock),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          filled: true,
+                          fillColor: Colors.grey.shade50,
+                        ),
+                        validator: (value) {
+                          if (value?.isEmpty ?? true)
+                            return 'Password is required';
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 24),
+                      // Login Button
+                      ElevatedButton(
+                        onPressed: _isLoading ? null : _handleLogin,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.deepPurple,
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        child: _isLoading
+                            ? const SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    Colors.white,
+                                  ),
+                                ),
+                              )
+                            : const Text(
+                                'Login',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                      ),
+                    ],
+                  ),
                 ),
-                validator: (value) {
-                  if (value?.isEmpty ?? true) return 'Password is required';
-                  return null;
-                },
               ),
-              const SizedBox(height: 30),
-
-              // Login Button
-              ElevatedButton(
-                onPressed: _isLoading ? null : _handleLogin,
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 15),
-                ),
-                child: _isLoading
-                    ? const SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    : const Text('Login', style: TextStyle(fontSize: 16)),
-              ),
-              const SizedBox(height: 15),
-
-              // Back to Role Selector
-              TextButton(
+            ),
+            const SizedBox(height: 16),
+            Center(
+              child: TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text('Back to sign up'),
+                child: Text(
+                  'Back to sign up',
+                  style: TextStyle(color: Colors.deepPurple.shade700),
+                ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

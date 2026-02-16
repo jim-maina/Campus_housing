@@ -1,6 +1,15 @@
 # campus_housing
 
-A new Flutter project.
+A new Flutter project implementing a minimal campus housing prototype.
+
+## Minimum Viable Prototype Features
+
+- Student/landlord registration and login
+- Create listing (landlords only) with title, price, location, description and optional image URL
+- View listings in a scrollable feed
+- Filter listings by minimum/maximum price
+- Contact landlord via simple call/message buttons (stubbed)
+- Logout functionality and user info display
 
 ## Getting Started
 

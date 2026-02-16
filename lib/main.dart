@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AuthProvider()),
       ],
       child: MaterialApp(
-        title: 'Campus Housing',
+        title: 'Nyumba nguvu',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         ),

@@ -20,12 +20,7 @@ class Student extends User {
     required String email,
     required String password,
     required String phone,
-  }) : super(
-    id: id,
-    email: email,
-    password: password,
-    phone: phone,
-  );
+  }) : super(id: id, email: email, password: password, phone: phone);
 }
 
 /// Landlord user — extends User
@@ -35,11 +30,5 @@ class Landlord extends User {
     required String email,
     required String password,
     required String phone,
-  }) : super(
-    id: id,
-    email: email,
-    password: password,
-    phone: phone,
-  );
+  }) : super(id: id, email: email, password: password, phone: phone);
 }
-

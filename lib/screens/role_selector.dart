@@ -11,74 +11,126 @@ class RoleSelectorPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Campus Housing'), centerTitle: true),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Title
-              const Text(
-                'Who are you?',
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Colors.deepPurple.shade50, Colors.deepPurple.shade100],
+          ),
+        ),
+        child: SafeArea(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20.0,
+                vertical: 40,
               ),
-              const SizedBox(height: 40),
-
-              // Student Card Button
-              _RoleCard(
-                icon: Icons.school,
-                title: 'Student',
-                description: 'Looking for housing near campus',
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => const StudentSignupPage(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // Logo/Brand Header
+                  Container(
+                    width: 70,
+                    height: 70,
+                    decoration: BoxDecoration(
+                      color: Colors.deepPurple,
+                      borderRadius: BorderRadius.circular(20),
                     ),
-                  );
-                },
-              ),
-
-              const SizedBox(height: 20),
-
-              // Landlord Card Button
-              _RoleCard(
-                icon: Icons.home,
-                title: 'Landlord',
-                description: 'Renting out your properties',
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => const LandlordSignupPage(),
+                    child: const Icon(
+                      Icons.apartment,
+                      size: 40,
+                      color: Colors.white,
                     ),
-                  );
-                },
-              ),
-
-              const SizedBox(height: 40),
-
-              // Login Link
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => const LoginPage(),
-                    ),
-                  );
-                },
-                child: const Text(
-                  'Already have an account? Login',
-                  style: TextStyle(
-                    color: Colors.deepPurple,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
                   ),
-                ),
+                  const SizedBox(height: 24),
+
+                  // Main Title
+                  const Text(
+                    'Campus Housing',
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.deepPurple,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+
+                  // Subtitle
+                  Text(
+                    'Find or list affordable housing near campus',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 16, color: Colors.grey.shade700),
+                  ),
+                  const SizedBox(height: 50),
+
+                  // Student Card Button
+                  _RoleCard(
+                    icon: Icons.school,
+                    title: 'I\'m a Student',
+                    description: 'Looking for affordable housing near campus',
+                    color: Colors.blue,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const StudentSignupPage(),
+                        ),
+                      );
+                    },
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  // Landlord Card Button
+                  _RoleCard(
+                    icon: Icons.apartment,
+                    title: 'I\'m a Landlord',
+                    description:
+                        'List your properties and find reliable tenants',
+                    color: Colors.orange,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const LandlordSignupPage(),
+                        ),
+                      );
+                    },
+                  ),
+
+                  const SizedBox(height: 40),
+
+                  // Login Link
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const LoginPage()),
+                      );
+                    },
+                    child: RichText(
+                      text: TextSpan(
+                        text: 'Already have an account? ',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey.shade700,
+                        ),
+                        children: const [
+                          TextSpan(
+                            text: 'Login',
+                            style: TextStyle(
+                              color: Colors.deepPurple,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),
@@ -86,56 +138,158 @@ class RoleSelectorPage extends StatelessWidget {
   }
 }
 
-/// A reusable card widget for role selection
-class _RoleCard extends StatelessWidget {
+/// A reusable card widget for role selection with gradient backgrounds
+class _RoleCard extends StatefulWidget {
   final IconData icon;
   final String title;
   final String description;
+  final Color color;
   final VoidCallback onTap;
 
   const _RoleCard({
     required this.icon,
     required this.title,
     required this.description,
+    required this.color,
     required this.onTap,
   });
 
   @override
+  State<_RoleCard> createState() => _RoleCardState();
+}
+
+class _RoleCardState extends State<_RoleCard>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 150),
+      vsync: this,
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
-      child: Card(
-        elevation: 4,
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            children: [
-              Icon(icon, size: 60, color: Colors.deepPurple),
-              const SizedBox(height: 15),
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
+      onTapDown: (_) => _controller.forward(),
+      onTapUp: (_) {
+        _controller.reverse();
+        widget.onTap();
+      },
+      onTapCancel: () => _controller.reverse(),
+      child: AnimatedBuilder(
+        animation: _controller,
+        builder: (context, child) {
+          return Transform.scale(
+            scale: 1.0 - (_controller.value * 0.05),
+            child: Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    widget.color.withValues(alpha: 0.2),
+                    widget.color.withValues(alpha: 0.05),
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: widget.color.withValues(alpha: 0.3),
+                  width: 2,
                 ),
               ),
-              const SizedBox(height: 10),
-              Text(
-                description,
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 14, color: Colors.grey),
-              ),
-              const SizedBox(height: 15),
-              const Text(
-                'Get Started →',
-                style: TextStyle(
-                  color: Colors.deepPurple,
-                  fontWeight: FontWeight.bold,
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  children: [
+                    // Icon container
+                    Container(
+                      width: 80,
+                      height: 80,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            widget.color,
+                            widget.color.withValues(alpha: 0.7),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Icon(widget.icon, size: 40, color: Colors.white),
+                    ),
+                    const SizedBox(height: 20),
+
+                    // Title
+                    Text(
+                      widget.title,
+                      style: const TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.deepPurple,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+
+                    // Description
+                    Text(
+                      widget.description,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey.shade700,
+                        height: 1.5,
+                      ),
+                    ),
+                    const SizedBox(height: 18),
+
+                    // CTA Text
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
+                      decoration: BoxDecoration(
+                        color: widget.color.withValues(alpha: 0.15),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            'Get Started',
+                            style: TextStyle(
+                              color: widget.color,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Icon(
+                            Icons.arrow_forward,
+                            color: widget.color,
+                            size: 16,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }
