@@ -64,37 +64,54 @@ class RoleSelectorPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 50),
 
-                  // Student Card Button
-                  _RoleCard(
-                    icon: Icons.school,
-                    title: 'I\'m a Student',
-                    description: 'Looking for affordable housing near campus',
-                    color: Colors.blue,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const StudentSignupPage(),
-                        ),
+                  // Two vertical blocks: Lister & Seeker
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      final isWide = constraints.maxWidth >= 600;
+                      final cardA = _RoleCard(
+                        icon: Icons.home,
+                        title: 'Lister',
+                        description:
+                            'List a property — for landlords, managers, or anyone who wants to advertise housing',
+                        color: Colors.green,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const LandlordSignupPage(),
+                            ),
+                          );
+                        },
                       );
-                    },
-                  ),
 
-                  const SizedBox(height: 20),
+                      final cardB = _RoleCard(
+                        icon: Icons.search,
+                        title: 'Seeker',
+                        description:
+                            'Find housing — students, staff, families, and community members welcome',
+                        color: Colors.indigo,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const StudentSignupPage(),
+                            ),
+                          );
+                        },
+                      );
 
-                  // Landlord Card Button
-                  _RoleCard(
-                    icon: Icons.apartment,
-                    title: 'I\'m a Landlord',
-                    description:
-                        'List your properties and find reliable tenants',
-                    color: Colors.orange,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const LandlordSignupPage(),
-                        ),
+                      if (isWide) {
+                        return Row(
+                          children: [
+                            Expanded(child: cardA),
+                            const SizedBox(width: 20),
+                            Expanded(child: cardB),
+                          ],
+                        );
+                      }
+
+                      return Column(
+                        children: [cardA, const SizedBox(height: 20), cardB],
                       );
                     },
                   ),

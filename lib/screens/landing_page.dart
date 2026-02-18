@@ -6,17 +6,25 @@ class LandingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const String _bgUrl =
+        'https://images.unsplash.com/photo-1560448204-e0b3b6ddf4c9?auto=format&fit=crop&w=1350&q=80';
+    // Precache the background image to reduce blank/flicker on first render.
+    precacheImage(NetworkImage(_bgUrl), context);
+
     return Scaffold(
       body: Container(
+        constraints: const BoxConstraints.expand(),
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Colors.deepPurple.shade800,
-              Colors.deepPurple.shade500,
-              Colors.blue.shade400,
-            ],
+          color: Colors.deepPurple.shade800, // fallback while image loads
+          image: DecorationImage(
+            image: AssetImage(
+              'images/double-en-suite-motel-bedroom-shower-comfortable-bed-seating-area-neutral-decor-illuminated-night-130755634.webp',
+            ),
+            fit: BoxFit.cover,
+            colorFilter: ColorFilter.mode(
+              Colors.black.withOpacity(0.45),
+              BlendMode.darken,
+            ),
           ),
         ),
         child: SafeArea(
