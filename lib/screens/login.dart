@@ -139,10 +139,12 @@ class _LoginPageState extends State<LoginPage> {
                           fillColor: Colors.grey.shade50,
                         ),
                         validator: (value) {
-                          if (value?.isEmpty ?? true)
+                          if (value?.isEmpty ?? true) {
                             return 'Email is required';
-                          if (!value!.contains('@'))
+                          }
+                          if (!value!.contains('@')) {
                             return 'Invalid email format';
+                          }
                           return null;
                         },
                       ),
@@ -162,8 +164,9 @@ class _LoginPageState extends State<LoginPage> {
                           fillColor: Colors.grey.shade50,
                         ),
                         validator: (value) {
-                          if (value?.isEmpty ?? true)
+                          if (value?.isEmpty ?? true) {
                             return 'Password is required';
+                          }
                           return null;
                         },
                       ),

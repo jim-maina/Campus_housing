@@ -33,8 +33,9 @@ class _ListingsFeedPageState extends State<ListingsFeedPage> {
       if (_searchQuery.isNotEmpty) {
         final q = _searchQuery.toLowerCase();
         if (!l.title.toLowerCase().contains(q) &&
-            !l.address.toLowerCase().contains(q))
+            !l.address.toLowerCase().contains(q)) {
           return false;
+        }
       }
       return true;
     }).toList();
@@ -178,7 +179,7 @@ class _ListingsFeedPageState extends State<ListingsFeedPage> {
                                           ? Image.network(
                                               item.imageUrls.first,
                                               fit: BoxFit.cover,
-                                              errorBuilder: (_, __, ___) =>
+                                              errorBuilder: (_, _, _) =>
                                                   Container(
                                                     color: Colors.grey.shade300,
                                                     child: const Icon(

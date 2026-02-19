@@ -6,10 +6,10 @@ class LandingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const String _bgUrl =
+    const String bgUrl =
         'https://images.unsplash.com/photo-1560448204-e0b3b6ddf4c9?auto=format&fit=crop&w=1350&q=80';
     // Precache the background image to reduce blank/flicker on first render.
-    precacheImage(NetworkImage(_bgUrl), context);
+    precacheImage(NetworkImage(bgUrl), context);
 
     return Scaffold(
       body: Container(
@@ -133,13 +133,13 @@ class LandingPage extends StatelessWidget {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(10),
                             ),
                           ),
                           child: const Text(
                             'Get Started',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 15,
                               fontWeight: FontWeight.bold,
                               color: Colors.deepPurple,
                             ),

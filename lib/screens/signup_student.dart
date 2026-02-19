@@ -146,10 +146,12 @@ class _StudentSignupPageState extends State<StudentSignupPage> {
                           fillColor: Colors.grey.shade50,
                         ),
                         validator: (value) {
-                          if (value?.isEmpty ?? true)
+                          if (value?.isEmpty ?? true) {
                             return 'Email is required';
-                          if (!value!.contains('@'))
+                          }
+                          if (!value!.contains('@')) {
                             return 'Invalid email format';
+                          }
                           return null;
                         },
                       ),
@@ -169,10 +171,12 @@ class _StudentSignupPageState extends State<StudentSignupPage> {
                           fillColor: Colors.grey.shade50,
                         ),
                         validator: (value) {
-                          if (value?.isEmpty ?? true)
+                          if (value?.isEmpty ?? true) {
                             return 'Password is required';
-                          if (value!.length < 6)
+                          }
+                          if (value!.length < 6) {
                             return 'Password must be at least 6 characters';
+                          }
                           return null;
                         },
                       ),
@@ -191,8 +195,9 @@ class _StudentSignupPageState extends State<StudentSignupPage> {
                           fillColor: Colors.grey.shade50,
                         ),
                         validator: (value) {
-                          if (value?.isEmpty ?? true)
+                          if (value?.isEmpty ?? true) {
                             return 'Phone number is required';
+                          }
                           return null;
                         },
                       ),
@@ -236,6 +241,7 @@ class _StudentSignupPageState extends State<StudentSignupPage> {
             Center(
               child: TextButton(
                 onPressed: () => Navigator.pop(context),
+
                 child: Text(
                   'Already have an account? Login',
                   style: TextStyle(color: Colors.deepPurple.shade700),

@@ -16,19 +16,19 @@ abstract class User {
 /// Student user — extends User
 class Student extends User {
   Student({
-    required String id,
-    required String email,
-    required String password,
-    required String phone,
-  }) : super(id: id, email: email, password: password, phone: phone);
+    required super.id,
+    required super.email,
+    required super.password,
+    required super.phone,
+  });
 }
 
 /// Landlord user — extends User
 class Landlord extends User {
   Landlord({
-    required String id,
-    required String email,
-    required String password,
-    required String phone,
-  }) : super(id: id, email: email, password: password, phone: phone);
+    required super.id,
+    required super.email,
+    required super.password,
+    required super.phone,
+  });
 }

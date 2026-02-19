@@ -17,6 +17,10 @@ class RoleSelectorPage extends StatelessWidget {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [Colors.deepPurple.shade50, Colors.deepPurple.shade100],
+            image: DecorationImage(
+            image: AssetImage(
+              'images/modern-student-apartment-building-exterior-night-130755632.webp',
+            ),
           ),
         ),
         child: SafeArea(
@@ -28,6 +32,7 @@ class RoleSelectorPage extends StatelessWidget {
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   // Logo/Brand Header
                   Container(
@@ -58,7 +63,7 @@ class RoleSelectorPage extends StatelessWidget {
 
                   // Subtitle
                   Text(
-                    'Find or list affordable housing near campus',
+                    'Choose your path ',
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 16, color: Colors.grey.shade700),
                   ),
@@ -70,10 +75,11 @@ class RoleSelectorPage extends StatelessWidget {
                       final isWide = constraints.maxWidth >= 600;
                       final cardA = _RoleCard(
                         icon: Icons.home,
-                        title: 'Lister',
+                        title: 'Landlord',
                         description:
-                            'List a property — for landlords, managers, or anyone who wants to advertise housing',
+                            'List your property and reach students faster',
                         color: Colors.green,
+                        ctaText: 'Post a Listing',
                         onTap: () {
                           Navigator.push(
                             context,
@@ -86,10 +92,11 @@ class RoleSelectorPage extends StatelessWidget {
 
                       final cardB = _RoleCard(
                         icon: Icons.search,
-                        title: 'Seeker',
+                        title: 'Student',
                         description:
-                            'Find housing — students, staff, families, and community members welcome',
+                            'Find your perfect student home near campus with ease',
                         color: Colors.indigo,
+                        ctaText: 'Start browsing',
                         onTap: () {
                           Navigator.push(
                             context,
@@ -161,6 +168,7 @@ class _RoleCard extends StatefulWidget {
   final String title;
   final String description;
   final Color color;
+  final String ctaText;
   final VoidCallback onTap;
 
   const _RoleCard({
@@ -168,6 +176,7 @@ class _RoleCard extends StatefulWidget {
     required this.title,
     required this.description,
     required this.color,
+    required this.ctaText,
     required this.onTap,
   });
 
@@ -210,20 +219,28 @@ class _RoleCardState extends State<_RoleCard>
             scale: 1.0 - (_controller.value * 0.05),
             child: Container(
               width: double.infinity,
+              constraints: const BoxConstraints(minHeight: 220),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    widget.color.withValues(alpha: 0.2),
-                    widget.color.withValues(alpha: 0.05),
+                    widget.color.withValues(alpha: 0.15),
+                    widget.color.withValues(alpha: 0.03),
                   ],
                 ),
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(26),
                 border: Border.all(
                   color: widget.color.withValues(alpha: 0.3),
                   width: 2,
                 ),
+                boxShadow: [
+                  BoxShadow(
+                    color: widget.color.withOpacity(0.18),
+                    blurRadius: 25,
+                    offset: const Offset(0, 12),
+                  ),
+                ],
               ),
               child: Padding(
                 padding: const EdgeInsets.all(24),
@@ -242,7 +259,7 @@ class _RoleCardState extends State<_RoleCard>
                             widget.color.withValues(alpha: 0.7),
                           ],
                         ),
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(26),
                       ),
                       child: Icon(widget.icon, size: 40, color: Colors.white),
                     ),
@@ -274,29 +291,36 @@ class _RoleCardState extends State<_RoleCard>
                     // CTA Text
                     Container(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 8,
+                        horizontal: 20,
+                        vertical: 12,
                       ),
                       decoration: BoxDecoration(
-                        color: widget.color.withValues(alpha: 0.15),
-                        borderRadius: BorderRadius.circular(8),
+                        color: widget.color,
+                        borderRadius: BorderRadius.circular(30),
+                        boxShadow: [
+                          BoxShadow(
+                            color: widget.color.withOpacity(0.4),
+                            blurRadius: 10,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            'Get Started',
+                            widget.ctaText,
                             style: TextStyle(
-                              color: widget.color,
+                              color: Colors.white,
                               fontWeight: FontWeight.bold,
                               fontSize: 14,
                             ),
                           ),
-                          const SizedBox(width: 8),
+                          SizedBox(width: 8),
                           Icon(
                             Icons.arrow_forward,
-                            color: widget.color,
-                            size: 16,
+                            color: Colors.white,
+                            size: 18,
                           ),
                         ],
                       ),
