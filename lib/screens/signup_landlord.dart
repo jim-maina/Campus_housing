@@ -1,3 +1,4 @@
+import 'package:campus_housing/screens/login.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
@@ -235,7 +236,10 @@ class _LandlordSignupPageState extends State<LandlordSignupPage> {
             const SizedBox(height: 16),
             Center(
               child: TextButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const LoginPage()),
+                ),
                 child: Text(
                   'Already have an account? Login',
                   style: TextStyle(color: Colors.deepPurple.shade700),

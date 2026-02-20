@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'role_selector.dart';
+import 'signup.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key});
@@ -126,7 +126,7 @@ class LandingPage extends StatelessWidget {
                           onPressed: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (_) => const RoleSelectorPage(),
+                                builder: (_) => const SignupPage(),
                               ),
                             );
                           },
@@ -141,7 +141,7 @@ class LandingPage extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
-                              color: Colors.deepPurple,
+                              color: Color.fromARGB(255, 13, 11, 17),
                             ),
                           ),
                         ),

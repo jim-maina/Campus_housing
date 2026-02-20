@@ -1,3 +1,4 @@
+import 'package:campus_housing/screens/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
@@ -209,10 +210,13 @@ class _LoginPageState extends State<LoginPage> {
             const SizedBox(height: 16),
             Center(
               child: TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text(
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const SignupPage()),
+                ),
+                child: const Text(
                   'Back to sign up',
-                  style: TextStyle(color: Colors.deepPurple.shade700),
+                  style: TextStyle(color: Color.fromARGB(255, 6, 2, 17)),
                 ),
               ),
             ),
