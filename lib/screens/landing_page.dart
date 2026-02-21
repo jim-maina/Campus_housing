@@ -17,9 +17,7 @@ class LandingPage extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.deepPurple.shade800, // fallback while image loads
           image: DecorationImage(
-            image: AssetImage(
-              'images/double-en-suite-motel-bedroom-shower-comfortable-bed-seating-area-neutral-decor-illuminated-night-130755634.webp',
-            ),
+            image: AssetImage('images/picture 1.png'),
             fit: BoxFit.cover,
             colorFilter: ColorFilter.mode(
               Colors.black.withOpacity(0.45),
