@@ -77,7 +77,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: Stack(
         children: [
-          /// ✅ BACKGROUND IMAGE
+          // BACKGROUND IMAGE
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
@@ -87,16 +87,16 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
 
-          /// ✅ DARK OVERLAY (makes text readable)
+          //DARK OVERLAY (makes text readable)
           Container(color: Colors.black.withOpacity(0.25)),
 
-          /// ✅ CONTENT
+          // CONTENT
           Center(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 children: [
-                  /// LOGO
+                  //LOGO
                   Container(
                     width: 80,
                     height: 80,
@@ -124,7 +124,7 @@ class _LoginPageState extends State<LoginPage> {
 
                   const SizedBox(height: 30),
 
-                  /// ✅ GLASS CARD
+                  //GLASS CARD
                   ClipRRect(
                     borderRadius: BorderRadius.circular(25),
                     child: BackdropFilter(

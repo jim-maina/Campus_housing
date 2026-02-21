@@ -139,7 +139,7 @@ class LandingPage extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
-                              color: Color.fromARGB(255, 13, 11, 17),
+                              color: Color.fromARGB(255, 86, 35, 187),
                             ),
                           ),
                         ),
