@@ -49,7 +49,9 @@ class AuthProvider extends ChangeNotifier {
       notifyListeners();
       return true;
     } catch (e) {
-      print('Signup error: $e');
+      if (kDebugMode) {
+        print('Signup error: $e');
+      }
       return false;
     }
   }

@@ -20,6 +20,7 @@ class LandingPage extends StatelessWidget {
             image: AssetImage('images/picture 1.png'),
             fit: BoxFit.cover,
             colorFilter: ColorFilter.mode(
+              // ignore: deprecated_member_use
               Colors.black.withOpacity(0.45),
               BlendMode.darken,
             ),

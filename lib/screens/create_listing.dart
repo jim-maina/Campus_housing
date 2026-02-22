@@ -6,7 +6,8 @@ import '../providers/listing_provider.dart';
 import '../providers/auth_provider.dart';
 
 class CreateListingPage extends StatefulWidget {
-  const CreateListingPage({super.key});
+  final String areaName;
+  const CreateListingPage({super.key, required this.areaName});
 
   @override
   State<CreateListingPage> createState() => _CreateListingPageState();
@@ -74,7 +75,7 @@ class _CreateListingPageState extends State<CreateListingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: AppBar(title: const Text('Create Listing')),
+      appBar: AppBar(title: Text('Create Listing in ${widget.areaName}')),
       body: SingleChildScrollView(
         padding: EdgeInsets.fromLTRB(
           20,

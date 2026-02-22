@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../providers/listing_provider.dart';
 import '../providers/auth_provider.dart';
 import '../models/listing.dart';
-import 'listing_detail.dart';
-import 'create_listing.dart';
+import '../screens/listing_detail.dart';
+import '../screens/area_listings_page.dart';
+import '../screens/create_listing.dart';
 
 class ListingsFeedPage extends StatefulWidget {
-  const ListingsFeedPage({super.key});
+  final String? areaName;
+  const ListingsFeedPage({super.key, this.areaName});
 
   @override
   State<ListingsFeedPage> createState() => _ListingsFeedPageState();
@@ -19,6 +20,8 @@ class _ListingsFeedPageState extends State<ListingsFeedPage> {
   double? _maxPrice;
   String _searchQuery = '';
   final TextEditingController _searchController = TextEditingController();
+
+  final List<String> areas = ['Nchiru', 'Kianjai', 'Makutano', 'Other'];
 
   @override
   void dispose() {
@@ -49,27 +52,10 @@ class _ListingsFeedPageState extends State<ListingsFeedPage> {
     final listings = _applyFilter(rawListings);
 
     return Scaffold(
-      resizeToAvoidBottomInset: true,
-      appBar: AppBar(
-        title: const Text('Browse Houses'),
-        actions: [
-          if (authProv.isLoggedIn)
-            PopupMenuButton<String>(
-              onSelected: (v) {
-                if (v == 'logout') authProv.logout();
-              },
-              itemBuilder: (_) => [
-                PopupMenuItem(
-                  value: 'logout',
-                  child: Text('Logout (${authProv.currentUser?.email ?? ''})'),
-                ),
-              ],
-            ),
-        ],
-      ),
+      appBar: AppBar(title: const Text('Browse Houses')),
       body: Column(
         children: [
-          // search bar
+          // Search bar
           Padding(
             padding: const EdgeInsets.all(12.0),
             child: TextField(
@@ -89,61 +75,50 @@ class _ListingsFeedPageState extends State<ListingsFeedPage> {
               },
             ),
           ),
-          // filter row
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    decoration: const InputDecoration(
-                      labelText: 'Min price',
-                      prefixText: 'KSH ',
-                    ),
-                    keyboardType: TextInputType.number,
-                    onChanged: (v) {
-                      setState(() {
-                        _minPrice = double.tryParse(v);
-                      });
-                    },
-                    controller: TextEditingController(
-                      text: _minPrice != null ? _minPrice.toString() : '',
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: TextField(
-                    decoration: const InputDecoration(
-                      labelText: 'Max price',
-                      prefixText: 'KSH ',
-                    ),
-                    keyboardType: TextInputType.number,
-                    onChanged: (v) {
-                      setState(() {
-                        _maxPrice = double.tryParse(v);
-                      });
-                    },
-                    controller: TextEditingController(
-                      text: _maxPrice != null ? _maxPrice.toString() : '',
-                    ),
-                  ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.clear),
-                  onPressed: () {
-                    setState(() {
-                      _minPrice = null;
-                      _maxPrice = null;
-                    });
+          // Area selector row
+          SizedBox(
+            height: 100,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              itemCount: areas.length,
+              separatorBuilder: (_, _) => const SizedBox(width: 12),
+              itemBuilder: (context, index) {
+                final area = areas[index];
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => AreaListingsPage(areaName: area),
+                      ),
+                    );
                   },
-                  tooltip: 'Clear filter',
-                ),
-              ],
+                  child: Card(
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Container(
+                      width: 120,
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.all(12),
+                      child: Text(
+                        area,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
             ),
           ),
           const Divider(),
-          // listings
+          // Listings
           Expanded(
             child: listings.isEmpty
                 ? const Center(child: Text('No listings match filter'))
@@ -154,7 +129,8 @@ class _ListingsFeedPageState extends State<ListingsFeedPage> {
                       final item = listings[index];
                       return GestureDetector(
                         onTap: () {
-                          Navigator.of(context).push(
+                          Navigator.push(
+                            context,
                             MaterialPageRoute(
                               builder: (_) => ListingDetailPage(listing: item),
                             ),
@@ -162,7 +138,6 @@ class _ListingsFeedPageState extends State<ListingsFeedPage> {
                         },
                         child: Card(
                           margin: const EdgeInsets.only(bottom: 12),
-                          elevation: 3,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
@@ -172,74 +147,36 @@ class _ListingsFeedPageState extends State<ListingsFeedPage> {
                             children: [
                               SizedBox(
                                 height: 180,
-                                child: Stack(
-                                  children: [
-                                    Positioned.fill(
-                                      child: item.imageUrls.isNotEmpty
-                                          ? Image.network(
-                                              item.imageUrls.first,
-                                              fit: BoxFit.cover,
-                                              errorBuilder: (_, _, _) =>
-                                                  Container(
-                                                    color: Colors.grey.shade300,
-                                                    child: const Icon(
-                                                      Icons.home,
-                                                      size: 40,
-                                                      color: Colors.white70,
-                                                    ),
-                                                  ),
-                                            )
-                                          : Container(
-                                              color: Colors.grey.shade300,
-                                              child: const Icon(
-                                                Icons.home,
-                                                size: 40,
-                                                color: Colors.white70,
-                                              ),
-                                            ),
-                                    ),
-                                    Positioned(
-                                      bottom: 8,
-                                      left: 8,
-                                      child: Container(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 6,
-                                          vertical: 2,
-                                        ),
-                                        color: Colors.black54,
-                                        child: Text(
-                                          item.formattedPrice,
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                child: item.imageUrls.isNotEmpty
+                                    ? Image.network(
+                                        item.imageUrls.first,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Container(
+                                        color: Colors.grey.shade300,
+                                        child: const Icon(
+                                          Icons.home,
+                                          size: 40,
+                                          color: Colors.white70,
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.all(12.0),
+                                padding: const EdgeInsets.all(12),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       item.title,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleMedium
-                                          ?.copyWith(
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
                                     ),
-                                    const SizedBox(height: 6),
-                                    Text(
-                                      item.address,
-                                      style: Theme.of(
-                                        context,
-                                      ).textTheme.bodySmall,
-                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(item.address),
+                                    const SizedBox(height: 4),
+                                    Text(item.formattedPrice),
                                   ],
                                 ),
                               ),
@@ -255,8 +192,11 @@ class _ListingsFeedPageState extends State<ListingsFeedPage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           if (authProv.userType == 'landlord') {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => const CreateListingPage()),
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => CreateListingPage(areaName: widget.areaName!),
+              ),
             );
           } else {
             ScaffoldMessenger.of(context).showSnackBar(

@@ -23,4 +23,6 @@ class Listing {
   String get formattedPrice {
     return '$currency ${price.toStringAsFixed(0)}';
   }
+
+  Null get area => null;
 }

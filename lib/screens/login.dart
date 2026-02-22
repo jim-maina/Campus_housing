@@ -1,8 +1,10 @@
+// ignore_for_file: deprecated_member_use
+
+import 'package:campus_housing/screens/area_page.dart';
 import 'package:campus_housing/screens/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
-import '../screens/listings_feed.dart';
 import 'dart:ui';
 
 /// LoginPage allows existing users to log back into their account
@@ -47,9 +49,9 @@ class _LoginPageState extends State<LoginPage> {
           ),
         );
 
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const ListingsFeedPage()),
-        );
+        Navigator.of(
+          context,
+        ).pushReplacement(MaterialPageRoute(builder: (_) => AreasPage()));
       } else if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -101,6 +103,8 @@ class _LoginPageState extends State<LoginPage> {
                     width: 80,
                     height: 80,
                     decoration: BoxDecoration(
+                      // ignore: duplicate_ignore
+                      // ignore: deprecated_member_use
                       color: Colors.white.withOpacity(0.2),
                       borderRadius: BorderRadius.circular(20),
                     ),

@@ -1,8 +1,10 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:ui';
+import 'package:campus_housing/screens/area_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
-import '../screens/listings_feed.dart';
 import '../screens/login.dart';
 
 class SignupPage extends StatefulWidget {
@@ -52,9 +54,9 @@ class _SignupPageState extends State<SignupPage> {
         }
 
         if (success && mounted) {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (_) => const ListingsFeedPage()),
-          );
+          Navigator.of(
+            context,
+          ).pushReplacement(MaterialPageRoute(builder: (_) => AreasPage()));
         }
       } finally {
         if (mounted) setState(() => _isLoading = false);

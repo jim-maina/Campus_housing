@@ -55,4 +55,8 @@ class ListingProvider extends ChangeNotifier {
     ]);
     notifyListeners();
   }
+
+  bool hasListingsInArea(String area) {
+    return true; // For now, we assume all areas have listings. You can implement actual logic later.
+  }
 }
