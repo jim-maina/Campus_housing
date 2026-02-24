@@ -1,7 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'dart:ui';
-import 'package:campus_housing/screens/area_page.dart';
+import 'package:campus_housing/screens/listings_feed.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
@@ -54,9 +54,9 @@ class _SignupPageState extends State<SignupPage> {
         }
 
         if (success && mounted) {
-          Navigator.of(
-            context,
-          ).pushReplacement(MaterialPageRoute(builder: (_) => AreasPage()));
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (_) => ListingsFeedPage()),
+          );
         }
       } finally {
         if (mounted) setState(() => _isLoading = false);

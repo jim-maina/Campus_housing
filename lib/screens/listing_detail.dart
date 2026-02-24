@@ -18,7 +18,7 @@ class ListingDetailPage extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          /// Background image
+          // Background image
           SizedBox(
             height: 300,
             width: double.infinity,
@@ -30,13 +30,13 @@ class ListingDetailPage extends StatelessWidget {
                   ),
           ),
 
-          /// Content
+          // Content
           SingleChildScrollView(
             child: Column(
               children: [
                 const SizedBox(height: 250),
 
-                /// Glass container
+                // Glass container
                 ClipRRect(
                   borderRadius: const BorderRadius.vertical(
                     top: Radius.circular(30),
@@ -46,16 +46,18 @@ class ListingDetailPage extends StatelessWidget {
                     child: Container(
                       padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
-                        // ignore: deprecated_member_use
-                        color: Colors.white.withOpacity(0.85),
+                        color: Colors.white.withOpacity(0.18), // frosty vibe
                         borderRadius: const BorderRadius.vertical(
                           top: Radius.circular(30),
+                        ),
+                        border: Border.all(
+                          color: Colors.white.withOpacity(0.25),
                         ),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          /// Title + price
+                          // Title + price
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -65,7 +67,17 @@ class ListingDetailPage extends StatelessWidget {
                                   style: Theme.of(context)
                                       .textTheme
                                       .headlineSmall
-                                      ?.copyWith(fontWeight: FontWeight.bold),
+                                      ?.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                        shadows: [
+                                          const Shadow(
+                                            blurRadius: 4,
+                                            color: Colors.black26,
+                                            offset: Offset(1, 1),
+                                          ),
+                                        ],
+                                      ),
                                 ),
                               ),
                               Text(
@@ -81,7 +93,7 @@ class ListingDetailPage extends StatelessWidget {
 
                           const SizedBox(height: 8),
 
-                          /// Address
+                          // Address
                           Row(
                             children: [
                               const Icon(
@@ -101,20 +113,24 @@ class ListingDetailPage extends StatelessWidget {
 
                           const SizedBox(height: 20),
 
-                          /// Description
+                          // Description
                           const Text(
                             "Description",
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
+                              color: Colors.white,
                             ),
                           ),
                           const SizedBox(height: 6),
-                          Text(listing.description),
+                          Text(
+                            listing.description,
+                            style: const TextStyle(color: Colors.white70),
+                          ),
 
                           const SizedBox(height: 24),
 
-                          /// Poster info (future expansion ready)
+                          // Poster info
                           Row(
                             children: [
                               const CircleAvatar(
@@ -126,7 +142,7 @@ class ListingDetailPage extends StatelessWidget {
                                 child: Text(
                                   "Posted by landlord",
                                   style: TextStyle(
-                                    color: Colors.grey.shade700,
+                                    color: Colors.grey.shade200,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
@@ -136,7 +152,7 @@ class ListingDetailPage extends StatelessWidget {
 
                           const SizedBox(height: 30),
 
-                          /// Contact buttons
+                          // Contact buttons
                           Row(
                             children: [
                               Expanded(
@@ -153,7 +169,9 @@ class ListingDetailPage extends StatelessWidget {
                                   icon: const Icon(Icons.call),
                                   label: const Text("Call"),
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.green,
+                                    backgroundColor: Colors.green.withOpacity(
+                                      0.8,
+                                    ),
                                     padding: const EdgeInsets.symmetric(
                                       vertical: 14,
                                     ),
@@ -175,7 +193,8 @@ class ListingDetailPage extends StatelessWidget {
                                   icon: const Icon(Icons.chat),
                                   label: const Text("WhatsApp"),
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.deepPurple,
+                                    backgroundColor: Colors.deepPurple
+                                        .withOpacity(0.85),
                                     padding: const EdgeInsets.symmetric(
                                       vertical: 14,
                                     ),

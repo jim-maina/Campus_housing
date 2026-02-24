@@ -1,210 +1,197 @@
+// ignore_for_file: deprecated_member_use
+
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/listing_provider.dart';
 import '../providers/auth_provider.dart';
-import '../models/listing.dart';
-import '../screens/listing_detail.dart';
-import '../screens/area_listings_page.dart';
-import '../screens/create_listing.dart';
+import 'area_listings_page.dart';
 
 class ListingsFeedPage extends StatefulWidget {
-  final String? areaName;
-  const ListingsFeedPage({super.key, this.areaName});
+  const ListingsFeedPage({super.key});
 
   @override
   State<ListingsFeedPage> createState() => _ListingsFeedPageState();
 }
 
 class _ListingsFeedPageState extends State<ListingsFeedPage> {
-  double? _minPrice;
-  double? _maxPrice;
-  String _searchQuery = '';
-  final TextEditingController _searchController = TextEditingController();
+  final List<String> _areas = ['Nchiru', 'Mascan', 'Alaban'];
 
-  final List<String> areas = ['Nchiru', 'Kianjai', 'Makutano', 'Other'];
+  void _addAreaDialog() {
+    final TextEditingController controller = TextEditingController();
 
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Add New Area'),
+        content: TextField(
+          controller: controller,
+          decoration: const InputDecoration(hintText: 'Enter area name'),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              final newArea = controller.text.trim();
+              if (newArea.isNotEmpty && !_areas.contains(newArea)) {
+                setState(() => _areas.add(newArea));
+              }
+              Navigator.pop(context);
+            },
+            child: const Text('Add'),
+          ),
+        ],
+      ),
+    );
   }
 
-  List<Listing> _applyFilter(List<Listing> list) {
-    return list.where((l) {
-      if (_minPrice != null && l.price < _minPrice!) return false;
-      if (_maxPrice != null && l.price > _maxPrice!) return false;
-      if (_searchQuery.isNotEmpty) {
-        final q = _searchQuery.toLowerCase();
-        if (!l.title.toLowerCase().contains(q) &&
-            !l.address.toLowerCase().contains(q)) {
-          return false;
-        }
-      }
-      return true;
-    }).toList();
+  Widget _buildGlassCard({required Widget child, double width = 140}) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(20),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15), // match login page
+        child: Container(
+          width: width,
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.25), // semi-transparent
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: Colors.white.withOpacity(0.4), width: 2),
+          ),
+          child: child,
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final listingProv = context.watch<ListingProvider>();
     final authProv = context.watch<AuthProvider>();
-    final rawListings = listingProv.listings;
-    final listings = _applyFilter(rawListings);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Browse Houses')),
-      body: Column(
+      body: Stack(
         children: [
-          // Search bar
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: TextField(
-              controller: _searchController,
-              decoration: InputDecoration(
-                hintText: 'Search location or title',
-                prefixIcon: const Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(24),
-                ),
-                isDense: true,
+          // BACKGROUND IMAGE
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('images/picture 1.png'),
+                fit: BoxFit.cover,
               ),
-              onChanged: (v) {
-                setState(() {
-                  _searchQuery = v;
-                });
-              },
             ),
           ),
-          // Area selector row
-          SizedBox(
-            height: 100,
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              itemCount: areas.length,
-              separatorBuilder: (_, _) => const SizedBox(width: 12),
-              itemBuilder: (context, index) {
-                final area = areas[index];
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => AreaListingsPage(areaName: area),
-                      ),
-                    );
-                  },
-                  child: Card(
-                    elevation: 4,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Container(
-                      width: 120,
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.all(12),
-                      child: Text(
-                        area,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
+
+          // DARK OVERLAY (like LoginPage)
+          Container(color: Colors.black.withOpacity(0.25)),
+
+          SafeArea(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 16),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(
+                    'Campus Housing',
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      color: const Color.fromARGB(255, 15, 14, 15),
                     ),
                   ),
-                );
-              },
-            ),
-          ),
-          const Divider(),
-          // Listings
-          Expanded(
-            child: listings.isEmpty
-                ? const Center(child: Text('No listings match filter'))
-                : ListView.builder(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    itemCount: listings.length,
+                ),
+                const SizedBox(height: 8),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(
+                    'Choose an area to see available listings',
+                    style: TextStyle(fontSize: 16, color: Colors.grey.shade200),
+                  ),
+                ),
+                const SizedBox(height: 24),
+
+                // AREA CARDS
+                SizedBox(
+                  height: 120,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    itemCount:
+                        _areas.length +
+                        (authProv.userType == 'landlord' ? 1 : 0),
+                    separatorBuilder: (_, __) => const SizedBox(width: 12),
                     itemBuilder: (context, index) {
-                      final item = listings[index];
+                      // Add area card
+                      if (authProv.userType == 'landlord' &&
+                          index == _areas.length) {
+                        return GestureDetector(
+                          onTap: _addAreaDialog,
+                          child: _buildGlassCard(
+                            width: 120,
+                            child: const Center(
+                              child: Icon(
+                                Icons.add,
+                                size: 40,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        );
+                      }
+
+                      final area = _areas[index];
                       return GestureDetector(
                         onTap: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => ListingDetailPage(listing: item),
+                              builder: (_) =>
+                                  AreaListingsPage(area: area, areaName: area),
                             ),
                           );
                         },
-                        child: Card(
-                          margin: const EdgeInsets.only(bottom: 12),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          clipBehavior: Clip.antiAlias,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              SizedBox(
-                                height: 180,
-                                child: item.imageUrls.isNotEmpty
-                                    ? Image.network(
-                                        item.imageUrls.first,
-                                        fit: BoxFit.cover,
-                                      )
-                                    : Container(
-                                        color: Colors.grey.shade300,
-                                        child: const Icon(
-                                          Icons.home,
-                                          size: 40,
-                                          color: Colors.white70,
-                                        ),
-                                      ),
+                        child: _buildGlassCard(
+                          child: Center(
+                            child: Text(
+                              area,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                fontSize: 18,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
                               ),
-                              Padding(
-                                padding: const EdgeInsets.all(12),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      item.title,
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(item.address),
-                                    const SizedBox(height: 4),
-                                    Text(item.formattedPrice),
-                                  ],
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
                         ),
                       );
                     },
                   ),
+                ),
+
+                const SizedBox(height: 24),
+
+                // ADMIN ANNOUNCEMENTS
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: _buildGlassCard(
+                      width: double.infinity,
+                      child: const Center(
+                        child: Text(
+                          'Admin announcements will appear here',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.white70, fontSize: 16),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          if (authProv.userType == 'landlord') {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => CreateListingPage(areaName: widget.areaName!),
-              ),
-            );
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Only landlords can add listings')),
-            );
-          }
-        },
-        child: const Icon(Icons.add),
       ),
     );
   }

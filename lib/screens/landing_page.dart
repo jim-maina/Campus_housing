@@ -130,17 +130,17 @@ class LandingPage extends StatelessWidget {
                             );
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
+                            backgroundColor: Colors.white.withOpacity(0.8),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          child: const Text(
+                          child: Text(
                             'Get Started',
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
-                              color: Color.fromARGB(255, 86, 35, 187),
+                              color: Colors.deepPurple.withOpacity(0.8),
                             ),
                           ),
                         ),

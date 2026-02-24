@@ -1,10 +1,6 @@
 import 'package:flutter/foundation.dart';
 import '../models/listing.dart';
 
-/// A very simple ChangeNotifier that holds a list of house listings.
-///
-/// At first we'll just keep some hard‑coded data. Later you can replace this
-/// with network/database logic.
 class ListingProvider extends ChangeNotifier {
   final List<Listing> _listings = [];
 
@@ -28,7 +24,17 @@ class ListingProvider extends ChangeNotifier {
     }
   }
 
-  /// Fake data for prototyping.
+  /// Get listings for a specific area
+  List<Listing> getListingsByArea(String area) {
+    return _listings.where((l) => l.address.contains(area)).toList();
+  }
+
+  /// Check if the listing belongs to a landlord (by phone)
+  bool isOwner(Listing listing, String currentPhone) {
+    return listing.contactPhone == currentPhone;
+  }
+
+  /// Fake data for prototyping
   void loadSampleData() {
     _listings.clear();
     _listings.addAll([
@@ -56,7 +62,8 @@ class ListingProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Check if there are any listings in an area
   bool hasListingsInArea(String area) {
-    return true; // For now, we assume all areas have listings. You can implement actual logic later.
+    return _listings.any((l) => l.address.contains(area));
   }
 }

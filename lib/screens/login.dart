@@ -1,6 +1,5 @@
 // ignore_for_file: deprecated_member_use
-
-import 'package:campus_housing/screens/area_page.dart';
+import 'package:campus_housing/screens/listings_feed.dart';
 import 'package:campus_housing/screens/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -49,9 +48,9 @@ class _LoginPageState extends State<LoginPage> {
           ),
         );
 
-        Navigator.of(
-          context,
-        ).pushReplacement(MaterialPageRoute(builder: (_) => AreasPage()));
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => ListingsFeedPage()),
+        );
       } else if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(

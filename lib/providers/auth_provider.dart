@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import '../models/user.dart';
 
-/// AuthProvider manages authentication state and user signup/login logic
-/// Using ChangeNotifier to notify listeners when auth state changes
+//AuthProvider manages authentication state and user signup/login logic
+//Using ChangeNotifier to notify listeners when auth state changes
 class AuthProvider extends ChangeNotifier {
   // Store the currently logged-in user (null if not logged in)
   User? _currentUser;
@@ -30,7 +30,7 @@ class AuthProvider extends ChangeNotifier {
     required String phone,
   }) async {
     try {
-      // TODO: In production, validate email format and call a backend API
+      // In production, validate email format and call a backend API
       // For now, we'll create the user locally
 
       // Generate a simple ID (in production, backend would do this)
@@ -64,7 +64,7 @@ class AuthProvider extends ChangeNotifier {
     required String phone,
   }) async {
     try {
-      // TODO: In production, validate email format and call a backend API
+      //  In production, validate email format and call a backend API
       // For now, we'll create the user locally
 
       // Generate a simple ID (in production, backend would do this)

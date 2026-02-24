@@ -25,4 +25,6 @@ class Listing {
   }
 
   Null get area => null;
+
+  get type => null;
 }
