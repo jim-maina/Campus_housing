@@ -193,7 +193,7 @@ class ListingDetailPage extends StatelessWidget {
                                   icon: const Icon(Icons.chat),
                                   label: const Text("WhatsApp"),
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.deepPurple
+                                    backgroundColor: Colors.greenAccent
                                         .withOpacity(0.85),
                                     padding: const EdgeInsets.symmetric(
                                       vertical: 14,

@@ -1,12 +1,10 @@
 // ignore_for_file: deprecated_member_use
-import 'package:campus_housing/screens/listings_feed.dart';
-import 'package:campus_housing/screens/signup.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../providers/auth_provider.dart';
 import 'dart:ui';
+import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'listings_feed.dart';
+import 'signup.dart';
 
-/// LoginPage allows existing users to log back into their account
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -20,6 +18,8 @@ class _LoginPageState extends State<LoginPage> {
   final _passwordController = TextEditingController();
   bool _isLoading = false;
 
+  final supabase = Supabase.instance.client;
+
   @override
   void dispose() {
     _emailController.dispose();
@@ -28,19 +28,17 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> _handleLogin() async {
-    if (!_formKey.currentState!.validate()) {
-      return;
-    }
+    if (!_formKey.currentState!.validate()) return;
 
     setState(() => _isLoading = true);
 
     try {
-      final success = await context.read<AuthProvider>().login(
+      final res = await supabase.auth.signInWithPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text,
       );
 
-      if (success && mounted) {
+      if (res.user != null && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Login successful!'),
@@ -66,44 +64,33 @@ class _LoginPageState extends State<LoginPage> {
         ).showSnackBar(SnackBar(content: Text('Error: $e')));
       }
     } finally {
-      if (mounted) {
-        setState(() => _isLoading = false);
-      }
+      if (mounted) setState(() => _isLoading = false);
     }
   }
 
-  @override
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          // BACKGROUND IMAGE
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('images/picture 1.png'), // your asset path
+                image: AssetImage('images/picture 1.png'),
                 fit: BoxFit.cover,
               ),
             ),
           ),
-
-          //DARK OVERLAY (makes text readable)
           Container(color: Colors.black.withOpacity(0.25)),
-
-          // CONTENT
           Center(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 children: [
-                  //LOGO
                   Container(
                     width: 80,
                     height: 80,
                     decoration: BoxDecoration(
-                      // ignore: duplicate_ignore
-                      // ignore: deprecated_member_use
                       color: Colors.white.withOpacity(0.2),
                       borderRadius: BorderRadius.circular(20),
                     ),
@@ -113,9 +100,7 @@ class _LoginPageState extends State<LoginPage> {
                       color: Colors.white,
                     ),
                   ),
-
                   const SizedBox(height: 20),
-
                   const Text(
                     "Welcome Back",
                     style: TextStyle(
@@ -124,10 +109,7 @@ class _LoginPageState extends State<LoginPage> {
                       color: Colors.white,
                     ),
                   ),
-
                   const SizedBox(height: 30),
-
-                  //GLASS CARD
                   ClipRRect(
                     borderRadius: BorderRadius.circular(25),
                     child: BackdropFilter(
@@ -145,54 +127,23 @@ class _LoginPageState extends State<LoginPage> {
                           key: _formKey,
                           child: Column(
                             children: [
-                              /// EMAIL
                               TextFormField(
                                 controller: _emailController,
                                 style: const TextStyle(color: Colors.white),
-                                decoration: InputDecoration(
-                                  labelText: 'Email',
-                                  labelStyle: const TextStyle(
-                                    color: Colors.white70,
-                                  ),
-                                  prefixIcon: const Icon(
-                                    Icons.email,
-                                    color: Colors.white,
-                                  ),
-                                  filled: true,
-                                  fillColor: Colors.white.withOpacity(0.15),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                ),
+                                decoration: _glassInput("Email", Icons.email),
+                                validator: (v) =>
+                                    v!.isEmpty ? "Email required" : null,
                               ),
-
                               const SizedBox(height: 16),
-
-                              /// PASSWORD
                               TextFormField(
                                 controller: _passwordController,
                                 obscureText: true,
                                 style: const TextStyle(color: Colors.white),
-                                decoration: InputDecoration(
-                                  labelText: 'Password',
-                                  labelStyle: const TextStyle(
-                                    color: Colors.white70,
-                                  ),
-                                  prefixIcon: const Icon(
-                                    Icons.lock,
-                                    color: Colors.white,
-                                  ),
-                                  filled: true,
-                                  fillColor: Colors.white.withOpacity(0.15),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                ),
+                                decoration: _glassInput("Password", Icons.lock),
+                                validator: (v) =>
+                                    v!.length < 6 ? "Min 6 chars" : null,
                               ),
-
                               const SizedBox(height: 24),
-
-                              /// LOGIN BUTTON
                               ElevatedButton(
                                 onPressed: _isLoading ? null : _handleLogin,
                                 style: ElevatedButton.styleFrom(
@@ -206,7 +157,11 @@ class _LoginPageState extends State<LoginPage> {
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                 ),
-                                child: const Text("Login"),
+                                child: _isLoading
+                                    ? const CircularProgressIndicator(
+                                        color: Colors.white,
+                                      )
+                                    : const Text("Login"),
                               ),
                             ],
                           ),
@@ -214,10 +169,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   ),
-
                   const SizedBox(height: 20),
-
-                  /// SIGNUP LINK
                   TextButton(
                     onPressed: () => Navigator.push(
                       context,
@@ -234,6 +186,17 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ],
       ),
+    );
+  }
+
+  InputDecoration _glassInput(String label, IconData icon) {
+    return InputDecoration(
+      labelText: label,
+      labelStyle: const TextStyle(color: Colors.white70),
+      prefixIcon: Icon(icon, color: Colors.white),
+      filled: true,
+      fillColor: Colors.white.withOpacity(0.15),
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
     );
   }
 }
